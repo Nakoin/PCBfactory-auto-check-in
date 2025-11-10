@@ -1291,10 +1291,9 @@ def main():
         all_results = execute_final_retry_for_failed_accounts(all_results, usernames, passwords, total_accounts)
     
     # 输出详细总结
-    log("=" * 18)
+    log("=" * 19)
     in_summary = True  # 启用总结收集
-    log("📊 详细签到任务完成总结")
-    log("=" * 18)
+    log("=" * 19)
     
     oshwhub_success_count = 0
     jindou_success_count = 0
@@ -1369,7 +1368,7 @@ def main():
             if result['jindou_success']:
                 jindou_success_count += 1
         
-        log("-" * 18)
+        log("-" * 27)
     
     # 总体统计
     log("📈 总体统计:")
@@ -1401,14 +1400,14 @@ def main():
         log(f" ⚠ 金豆签到失败账号: {', '.join(map(str, failed_jindou))}")
         
     if password_error_accounts:
-        log(f" ⚠密码错误的账号: {', '.join(map(str, password_error_accounts))}")
+        log(f" ⚠ 密码错误的账号: {', '.join(map(str, password_error_accounts))}")
        
     if not failed_oshwhub and not failed_jindou and not password_error_accounts:
         log(" 🎉 所有账号全部签到成功!")
     elif password_error_accounts and not failed_oshwhub and not failed_jindou:
-        log(" ⚠除了密码错误账号，其他账号全部签到成功!")
+        log(" ⚠ 除了密码错误账号，其他账号全部签到成功!")
     
-    log("=" * 18)
+    log("=" * 19)
     
     # 推送总结
     push_summary()
@@ -1416,16 +1415,16 @@ def main():
     # 根据失败退出标志决定退出码
     all_failed_accounts = failed_accounts + password_error_accounts
     if enable_failure_exit and all_failed_accounts:
-        log(f"❌ 检测到失败的账号: {', '.join(map(str, all_failed_accounts))}")
+        log(f"❌检测到失败的账号: {', '.join(map(str, all_failed_accounts))}")
         if password_error_accounts:
-            log(f"❌ 其中密码错误的账号: {', '.join(map(str, password_error_accounts))}")
-        log("❌ 由于失败退出功能已开启，返回报错退出码以获得邮件提醒")
+            log(f"❌其中密码错误的账号: {', '.join(map(str, password_error_accounts))}")
+        log("❌由于失败退出功能已开启，返回报错退出码以获得邮件提醒")
         sys.exit(1)
     else:
         if enable_failure_exit:
-            log("✅ 所有账号签到成功，程序正常退出")
+            log("✅所有账号签到成功，程序正常退出")
         else:
-            log("✅ 程序正常退出")
+            log("✅程序正常退出")
         sys.exit(0)
 
 if __name__ == "__main__":
