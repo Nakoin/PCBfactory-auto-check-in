@@ -1291,10 +1291,10 @@ def main():
         all_results = execute_final_retry_for_failed_accounts(all_results, usernames, passwords, total_accounts)
     
     # 输出详细总结
-    log("=" * 70)
+    log("=" * 18)
     in_summary = True  # 启用总结收集
     log("📊 详细签到任务完成总结")
-    log("=" * 70)
+    log("=" * 18)
     
     oshwhub_success_count = 0
     jindou_success_count = 0
@@ -1332,83 +1332,83 @@ def main():
         # 密码错误账号的特殊显示
         if password_error:
             log(f"账号 {account_index} (未知) 详细结果: [密码错误]")
-            log("  └── 状态: ❌ 账号或密码错误，跳过此账号")
+            log("└─ 状态: ❌ 账号或密码错误，跳过此账号")
         else:
             log(f"账号 {account_index} ({nickname}) 详细结果:{retry_label}")
-            log(f"  ├── 开源平台: {result['oshwhub_status']}")
+            log(f"├─ 开源平台: {result['oshwhub_status']}")
             
             # 显示积分变化
             if result['points_reward'] > 0:
-                log(f"  ├── 积分变化: {result['initial_points']} → {result['final_points']} (+{result['points_reward']})")
+                log(f"├─ 积分变化: {result['initial_points']} → {result['final_points']} (+{result['points_reward']})")
                 total_points_reward += result['points_reward']
             elif result['points_reward'] == 0 and result['initial_points'] > 0:
-                log(f"  ├── 积分变化: {result['initial_points']} → {result['final_points']} (0)")
+                log(f"├─ 积分变化: {result['initial_points']} → {result['final_points']} (0)")
             else:
-                log(f"  ├── 积分状态: 无法获取积分信息")
+                log(f"├─ 积分状态: 无法获取积分信息")
             
-            log(f"  ├── 金豆签到: {result['jindou_status']}")
+            log(f"├─ 金豆签到: {result['jindou_status']}")
             
             # 显示金豆变化
             if result['jindou_reward'] > 0:
-                jindou_text = f"  ├── 金豆变化: {result['initial_jindou']} → {result['final_jindou']} (+{result['jindou_reward']})"
+                jindou_text = f"├─ 金豆变化: {result['initial_jindou']} → {result['final_jindou']} (+{result['jindou_reward']})"
                 if result['has_jindou_reward']:
                     jindou_text += "（有奖励）"
                 log(jindou_text)
                 total_jindou_reward += result['jindou_reward']
             elif result['jindou_reward'] == 0 and result['initial_jindou'] > 0:
-                log(f"  ├── 金豆变化: {result['initial_jindou']} → {result['final_jindou']} (0)")
+                log(f"├─ 金豆变化: {result['initial_jindou']} → {result['final_jindou']} (0)")
             else:
-                log(f"  ├── 金豆状态: 无法获取金豆信息")
+                log(f"├─ 金豆状态: 无法获取金豆信息")
             
             # 显示礼包领取结果
             for reward_result in result['reward_results']:
-                log(f"  ├── {reward_result}")
+                log(f"├─ {reward_result}")
             
             if result['oshwhub_success']:
                 oshwhub_success_count += 1
             if result['jindou_success']:
                 jindou_success_count += 1
         
-        log("  " + "-" * 50)
+        log("-" * 18)
     
     # 总体统计
     log("📈 总体统计:")
-    log(f"  ├── 总账号数: {total_accounts}")
-    log(f"  ├── 开源平台签到成功: {oshwhub_success_count}/{total_accounts}")
-    log(f"  ├── 金豆签到成功: {jindou_success_count}/{total_accounts}")
+    log(f"├─ 总账号数: {total_accounts}")
+    log(f"├─ 开源平台签到成功: {oshwhub_success_count}/{total_accounts}")
+    log(f"├─ 金豆签到成功: {jindou_success_count}/{total_accounts}")
     
     if total_points_reward > 0:
-        log(f"  ├── 总计获得积分: +{total_points_reward}")
+        log(f"├─ 总计获得积分: +{total_points_reward}")
     
     if total_jindou_reward > 0:
-        log(f"  ├── 总计获得金豆: +{total_jindou_reward}")
+        log(f"├─ 总计获得金豆: +{total_jindou_reward}")
     
     # 计算成功率
     oshwhub_rate = (oshwhub_success_count / total_accounts) * 100 if total_accounts > 0 else 0
     jindou_rate = (jindou_success_count / total_accounts) * 100 if total_accounts > 0 else 0
     
-    log(f"  ├── 开源平台成功率: {oshwhub_rate:.1f}%")
-    log(f"  └── 金豆签到成功率: {jindou_rate:.1f}%")
+    log(f"├─ 开源平台成功率: {oshwhub_rate:.1f}%")
+    log(f"└─ 金豆签到成功率: {jindou_rate:.1f}%")
     
     # 失败账号列表（排除密码错误）
     failed_oshwhub = [r['account_index'] for r in all_results if not r['oshwhub_success'] and not r.get('password_error', False)]
     failed_jindou = [r['account_index'] for r in all_results if not r['jindou_success'] and not r.get('password_error', False)]
     
     if failed_oshwhub:
-        log(f"  ⚠ 开源平台失败账号: {', '.join(map(str, failed_oshwhub))}")
+        log(f" ⚠ 开源平台失败账号: {', '.join(map(str, failed_oshwhub))}")
     
     if failed_jindou:
-        log(f"  ⚠ 金豆签到失败账号: {', '.join(map(str, failed_jindou))}")
+        log(f" ⚠ 金豆签到失败账号: {', '.join(map(str, failed_jindou))}")
         
     if password_error_accounts:
-        log(f"  ⚠密码错误的账号: {', '.join(map(str, password_error_accounts))}")
+        log(f" ⚠密码错误的账号: {', '.join(map(str, password_error_accounts))}")
        
     if not failed_oshwhub and not failed_jindou and not password_error_accounts:
-        log("  🎉 所有账号全部签到成功!")
+        log(" 🎉 所有账号全部签到成功!")
     elif password_error_accounts and not failed_oshwhub and not failed_jindou:
-        log("  ⚠除了密码错误账号，其他账号全部签到成功!")
+        log(" ⚠除了密码错误账号，其他账号全部签到成功!")
     
-    log("=" * 70)
+    log("=" * 18)
     
     # 推送总结
     push_summary()
