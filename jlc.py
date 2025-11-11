@@ -1291,9 +1291,9 @@ def main():
         all_results = execute_final_retry_for_failed_accounts(all_results, usernames, passwords, total_accounts)
     
     # 输出详细总结
-    log("=" * 19)
+    log("=" * 21)
     in_summary = True  # 启用总结收集
-    log("=" * 19)
+    log("=" * 21)
     
     oshwhub_success_count = 0
     jindou_success_count = 0
@@ -1368,7 +1368,7 @@ def main():
             if result['jindou_success']:
                 jindou_success_count += 1
         
-        log("-" * 27)
+        log("-" * 26)
     
     # 总体统计
     log("📈 总体统计:")
@@ -1407,7 +1407,7 @@ def main():
     elif password_error_accounts and not failed_oshwhub and not failed_jindou:
         log(" ⚠ 除了密码错误账号，其他账号全部签到成功!")
     
-    log("=" * 19)
+    log("=" * 21)
     
     # 推送总结
     push_summary()
